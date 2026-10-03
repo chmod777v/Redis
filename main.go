@@ -17,11 +17,12 @@ type Person struct {
 func main() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
-		Password: "",
+		Password: "12345",
 		DB:       0, //бд по умолчанию
 	})
 	ping, err := client.Ping(context.Background()).Result()
 	if err != nil {
+		fmt.Println("ERROR:", err.Error())
 		return
 	}
 	fmt.Println("Redis response to ping:", ping)
@@ -36,7 +37,6 @@ func main() {
 	})
 	client.RPush(context.Background(), "person", ivan)
 	val, _ := client.LRange(context.Background(), "person", 0, 0).Result()
-
 	fmt.Println(val)
 
 	res := Person{}
